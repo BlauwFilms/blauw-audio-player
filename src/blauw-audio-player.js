@@ -9,16 +9,22 @@
  *   <div class="blauw-audio-player"
  *        data-src="https://example.com/track.mp3"
  *        data-title="Track Title"
+ *        data-artist="Artist Name"
+ *        data-album="Album Name"
  *        data-cover="https://example.com/cover.jpg"></div>
  *
  * Embed (album):
  *   <div class="blauw-audio-player"
  *        data-album="Album Name"
+ *        data-artist="Default Artist"
  *        data-cover="https://example.com/cover.jpg"
  *        data-tracks='[
  *          {"src":"https://example.com/01.mp3","title":"Track 1"},
- *          {"src":"https://example.com/02.mp3","title":"Track 2"}
+ *          {"src":"https://example.com/02.mp3","title":"Track 2","artist":"Different Artist"}
  *        ]'></div>
+ *
+ * Per-track artist overrides player-level data-artist.
+ * Any missing field is hidden — layout adapts.
  *
  * Customize colors via CSS variables (see blauw-audio-player.css).
  *
@@ -56,14 +62,22 @@
 
   function parseTracks(el) {
     if (el.dataset.src) {
-      return [{ src: el.dataset.src, title: el.dataset.title || 'Untitled' }];
+      return [{
+        src: el.dataset.src,
+        title: el.dataset.title || 'Untitled',
+        artist: el.dataset.artist || ''
+      }];
     }
     if (el.dataset.tracks) {
       try {
         var arr = JSON.parse(el.dataset.tracks);
         if (Array.isArray(arr) && arr.length > 0) {
           return arr.map(function (t) {
-            return { src: t.src || '', title: t.title || 'Untitled' };
+            return {
+              src: t.src || '',
+              title: t.title || 'Untitled',
+              artist: t.artist || ''
+            };
           });
         }
       } catch (e) {
@@ -80,6 +94,7 @@
       return;
     }
 
+    var playerArtist = el.dataset.artist || '';
     var albumTitle = el.dataset.album || '';
     var coverUrl = el.dataset.cover || '';
     var isAlbum = tracks.length > 1;
@@ -87,10 +102,6 @@
     var coverHtml = coverUrl
       ? '<img src="' + escapeHtml(coverUrl) + '" alt="">'
       : ICONS.music;
-
-    var albumHtml = (isAlbum && albumTitle)
-      ? '<div class="bap-album">' + escapeHtml(albumTitle) + '</div>'
-      : '';
 
     var prevBtnHtml = isAlbum
       ? '<button class="bap-btn bap-prev" aria-label="Previous track">' + ICONS.prev + '</button>'
@@ -104,8 +115,8 @@
       '<div class="bap-inner">' +
         '<div class="bap-cover">' + coverHtml + '</div>' +
         '<div class="bap-content">' +
-          albumHtml +
           '<span class="bap-title"></span>' +
+          '<span class="bap-meta"></span>' +
           '<div class="bap-bar"><div class="bap-progress"></div></div>' +
           '<div class="bap-times"><span class="bap-cur">0:00</span><span class="bap-tot">0:00</span></div>' +
           '<div class="bap-controls">' +
@@ -132,6 +143,7 @@
 
     // Element refs
     var titleEl = el.querySelector('.bap-title');
+    var metaEl = el.querySelector('.bap-meta');
     var curEl = el.querySelector('.bap-cur');
     var totEl = el.querySelector('.bap-tot');
     var progressEl = el.querySelector('.bap-progress');
@@ -149,11 +161,23 @@
     var volSlider = el.querySelector('.bap-vol-slider');
     var tracksEl = el.querySelector('.bap-tracks');
 
+    function buildMetaLine(track) {
+      // Track artist takes precedence; falls back to player-level artist
+      var artist = (track.artist && track.artist.trim()) || playerArtist;
+      var parts = [];
+      if (artist) parts.push(artist);
+      if (albumTitle) parts.push(albumTitle);
+      return parts.join(' · ');
+    }
+
     function loadTrack(idx) {
       ci = idx;
       var t = tracks[ci];
       audio.src = t.src;
       titleEl.textContent = t.title;
+      var meta = buildMetaLine(t);
+      metaEl.textContent = meta;
+      titleEl.classList.toggle('bap-no-meta', !meta);
       progressEl.style.width = '0%';
       curEl.textContent = '0:00';
       totEl.textContent = '0:00';

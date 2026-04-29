@@ -66,7 +66,9 @@
   <div class="demo-section">
     <div class="blauw-audio-player"
          data-src="https://download.samplelib.com/mp3/sample-15s.mp3"
-         data-title="Sample 15 second track"></div>
+         data-title="Sample 15 second track"
+         data-artist="Sample Artist"
+         data-album="Sample Album"></div>
   </div>
 
   <h2>Single track with cover</h2>
@@ -74,6 +76,7 @@
     <div class="blauw-audio-player"
          data-src="https://download.samplelib.com/mp3/sample-15s.mp3"
          data-title="With a cover image"
+         data-artist="Some Artist"
          data-cover="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop"></div>
   </div>
 
@@ -81,14 +84,22 @@
   <div class="demo-section">
     <div class="blauw-audio-player"
          data-album="Sample Album"
+         data-artist="Default Artist"
          data-cover="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&h=400&fit=crop"
          data-tracks='[
            {"src":"https://download.samplelib.com/mp3/sample-3s.mp3","title":"Three seconds"},
-           {"src":"https://download.samplelib.com/mp3/sample-6s.mp3","title":"Six seconds"},
+           {"src":"https://download.samplelib.com/mp3/sample-6s.mp3","title":"Six seconds","artist":"Featured Guest"},
            {"src":"https://download.samplelib.com/mp3/sample-9s.mp3","title":"Nine seconds"},
            {"src":"https://download.samplelib.com/mp3/sample-12s.mp3","title":"Twelve seconds"},
            {"src":"https://download.samplelib.com/mp3/sample-15s.mp3","title":"Fifteen seconds"}
          ]'></div>
+  </div>
+
+  <h2>Title only (minimal — no artist or album)</h2>
+  <div class="demo-section">
+    <div class="blauw-audio-player"
+         data-src="https://download.samplelib.com/mp3/sample-15s.mp3"
+         data-title="Just a title, nothing else"></div>
   </div>
 
   <h2>Dark theme (CSS variables)</h2>

@@ -89,12 +89,25 @@
             <label class="bp-gen-label" for="bpGenSingleTitle">Track Title</label>
             <input type="text" class="form-field" id="bpGenSingleTitle" placeholder="Episode 1: The Beginning">
           </div>
+          <div class="bp-gen-group">
+            <label class="bp-gen-label" for="bpGenSingleArtist">Artist Name (Optional)</label>
+            <input type="text" class="form-field" id="bpGenSingleArtist" placeholder="Artist or speaker name">
+          </div>
+          <div class="bp-gen-group">
+            <label class="bp-gen-label" for="bpGenSingleAlbum">Album Name (Optional)</label>
+            <input type="text" class="form-field" id="bpGenSingleAlbum" placeholder="Album, podcast, or series name">
+          </div>
         </div>
 
         <div id="bpGenAlbum" style="display:none">
           <div class="bp-gen-group">
             <label class="bp-gen-label" for="bpGenAlbumTitle">Album / Playlist Title</label>
             <input type="text" class="form-field" id="bpGenAlbumTitle" placeholder="My Album Name">
+          </div>
+          <div class="bp-gen-group">
+            <label class="bp-gen-label" for="bpGenAlbumArtist">Default Artist (Optional)</label>
+            <input type="text" class="form-field" id="bpGenAlbumArtist" placeholder="Used for tracks without their own artist">
+            <div class="bp-gen-hint">Per-track artist overrides this if set below.</div>
           </div>
           <div class="bp-gen-group">
             <label class="bp-gen-label">Tracks</label>
@@ -150,8 +163,8 @@
 
 var S = {
   mode: 'single',
-  single: { src: '', title: '' },
-  album: { title: '', tracks: [{ src: '', title: '' }] },
+  single: { src: '', title: '', artist: '', album: '' },
+  album: { title: '', artist: '', tracks: [{ src: '', title: '', artist: '' }] },
   cover: ''
 };
 
@@ -164,7 +177,10 @@ var E = {
   album: $('#bpGenAlbum'),
   singleSrc: $('#bpGenSingleSrc'),
   singleTitle: $('#bpGenSingleTitle'),
+  singleArtist: $('#bpGenSingleArtist'),
+  singleAlbum: $('#bpGenSingleAlbum'),
   albumTitle: $('#bpGenAlbumTitle'),
+  albumArtist: $('#bpGenAlbumArtist'),
   trackList: $('#bpGenTrackList'),
   addTrack: $('#bpGenAddTrack'),
   cover: $('#bpGenCover'),
@@ -208,16 +224,20 @@ function renderTrackList(){
       '<div class="bp-gen-track-fields">' +
         '<input type="url" class="form-field bp-gen-track-src" placeholder="https://pub-xxx.r2.dev/audio/...">' +
         '<input type="text" class="form-field bp-gen-track-title" placeholder="Track title">' +
+        '<input type="text" class="form-field bp-gen-track-artist" placeholder="Artist (optional, overrides default)">' +
       '</div>' +
       '<button class="bp-gen-track-del" data-i="' + i + '" aria-label="Remove track">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
       '</button>';
     var srcInput = d.querySelector('.bp-gen-track-src');
     var titleInput = d.querySelector('.bp-gen-track-title');
+    var artistInput = d.querySelector('.bp-gen-track-artist');
     srcInput.value = t.src;
     titleInput.value = t.title;
+    artistInput.value = t.artist || '';
     srcInput.oninput = function(){ S.album.tracks[i].src = srcInput.value; update(); };
     titleInput.oninput = function(){ S.album.tracks[i].title = titleInput.value; update(); };
+    artistInput.oninput = function(){ S.album.tracks[i].artist = artistInput.value; update(); };
     d.querySelector('.bp-gen-track-del').onclick = function(){
       if(S.album.tracks.length > 1){
         S.album.tracks.splice(i, 1);
@@ -258,11 +278,16 @@ function buildEmbed(){
   if(S.mode === 'single'){
     attrs.push('data-src="' + escapeAttr(S.single.src) + '"');
     attrs.push('data-title="' + escapeAttr(S.single.title || 'Untitled') + '"');
+    if(S.single.artist) attrs.push('data-artist="' + escapeAttr(S.single.artist) + '"');
+    if(S.single.album)  attrs.push('data-album="'  + escapeAttr(S.single.album)  + '"');
   }else{
-    if(S.album.title) attrs.push('data-album="' + escapeAttr(S.album.title) + '"');
+    if(S.album.title)  attrs.push('data-album="'  + escapeAttr(S.album.title)  + '"');
+    if(S.album.artist) attrs.push('data-artist="' + escapeAttr(S.album.artist) + '"');
     var validTracks = S.album.tracks.filter(function(t){ return t.src; });
     var tracksJson = JSON.stringify(validTracks.map(function(t){
-      return { src: t.src, title: t.title || 'Untitled' };
+      var obj = { src: t.src, title: t.title || 'Untitled' };
+      if(t.artist) obj.artist = t.artist;
+      return obj;
     }));
     // For HTML attribute we use single quotes around the value, so escape internal single quotes/HTML
     var safeJson = tracksJson.replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -311,10 +336,13 @@ E.modeBtns.forEach(function(b){
 // Single track inputs
 E.singleSrc.oninput = function(){ S.single.src = E.singleSrc.value.trim(); update(); };
 E.singleTitle.oninput = function(){ S.single.title = E.singleTitle.value; update(); };
+E.singleArtist.oninput = function(){ S.single.artist = E.singleArtist.value; update(); };
+E.singleAlbum.oninput = function(){ S.single.album = E.singleAlbum.value; update(); };
 
 // Album inputs
 E.albumTitle.oninput = function(){ S.album.title = E.albumTitle.value; update(); };
-E.addTrack.onclick = function(){ S.album.tracks.push({ src: '', title: '' }); renderTrackList(); update(); };
+E.albumArtist.oninput = function(){ S.album.artist = E.albumArtist.value; update(); };
+E.addTrack.onclick = function(){ S.album.tracks.push({ src: '', title: '', artist: '' }); renderTrackList(); update(); };
 
 // Cover input
 E.cover.oninput = function(){ S.cover = E.cover.value.trim(); update(); };
@@ -327,9 +355,14 @@ E.copy.onclick = function(){
 // Reset
 E.reset.onclick = function(){
   if(E.code.value && !confirm('Clear all fields?')) return;
-  S = { mode: 'single', single: { src: '', title: '' }, album: { title: '', tracks: [{ src: '', title: '' }] }, cover: '' };
-  E.singleSrc.value = ''; E.singleTitle.value = '';
-  E.albumTitle.value = ''; E.cover.value = '';
+  S = {
+    mode: 'single',
+    single: { src: '', title: '', artist: '', album: '' },
+    album: { title: '', artist: '', tracks: [{ src: '', title: '', artist: '' }] },
+    cover: ''
+  };
+  E.singleSrc.value = ''; E.singleTitle.value = ''; E.singleArtist.value = ''; E.singleAlbum.value = '';
+  E.albumTitle.value = ''; E.albumArtist.value = ''; E.cover.value = '';
   E.modeBtns.forEach(function(x){ x.classList.toggle('bp-gen-active', x.dataset.mode === 'single'); });
   E.single.style.display = 'block'; E.album.style.display = 'none';
   renderTrackList();

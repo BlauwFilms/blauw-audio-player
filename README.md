@@ -4,7 +4,7 @@ A minimal, embeddable HTML5 audio player. No dependencies, no tracking, no brand
 
 Designed for archives, museums, podcasts, and editorial sites. Supports single tracks and albums. Works on any website.
 
-*A minimal player. Add screenshots here once deployed in production.*
+![Screenshot placeholder — add a real screenshot once deployed](https://via.placeholder.com/480x140/ffffff/1a1a1a?text=Blauw+Audio+Player)
 
 ## Quick start
 
@@ -21,6 +21,8 @@ Then anywhere on your page, drop in a single track:
 <div class="blauw-audio-player"
      data-src="https://example.com/track.mp3"
      data-title="Track Title"
+     data-artist="Artist Name"
+     data-album="Album Name"
      data-cover="https://example.com/cover.jpg"></div>
 ```
 
@@ -29,10 +31,11 @@ Or an album:
 ```html
 <div class="blauw-audio-player"
      data-album="Album Name"
+     data-artist="Default Artist"
      data-cover="https://example.com/cover.jpg"
      data-tracks='[
        {"src":"https://example.com/01.mp3","title":"Opening"},
-       {"src":"https://example.com/02.mp3","title":"Interlude"},
+       {"src":"https://example.com/02.mp3","title":"Interlude","artist":"Featured Artist"},
        {"src":"https://example.com/03.mp3","title":"Closing"}
      ]'></div>
 ```
@@ -94,9 +97,12 @@ Set them on `:root` for site-wide theming, or on a parent element / individual `
 |---|---|---|
 | `data-src` | Single track | URL of the audio file |
 | `data-title` | Optional | Track title (defaults to "Untitled") |
-| `data-tracks` | Album | JSON array of `{src, title}` objects |
-| `data-album` | Optional | Album/playlist name (shown above title in album mode) |
+| `data-artist` | Optional | Artist name |
+| `data-album` | Optional | Album / podcast / series name |
+| `data-tracks` | Album | JSON array of `{src, title, artist}` objects |
 | `data-cover` | Optional | URL of cover image (square recommended) |
+
+In album mode, each track in `data-tracks` may include its own `artist` field, which overrides the player-level `data-artist` for that track. Title is shown in bold; artist and album appear underneath, separated by a middle dot. Missing fields are hidden — the layout adapts.
 
 ### JavaScript API
 
