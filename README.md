@@ -4,7 +4,7 @@ A minimal, embeddable HTML5 audio player. No dependencies, no tracking, no brand
 
 Designed for archives, museums, podcasts, and editorial sites. Supports single tracks and albums. Works on any website.
 
-![Screenshot placeholder — add a real screenshot once deployed](https://via.placeholder.com/480x140/ffffff/1a1a1a?text=Blauw+Audio+Player)
+*A minimal player. Add screenshots here once deployed in production.*
 
 ## Quick start
 
