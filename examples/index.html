@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blauw Audio Player — Examples</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+  <!-- Local for demo. Production usage: load from jsDelivr. -->
+  <link rel="stylesheet" href="../dist/blauw-audio-player.css">
+  <script src="../dist/blauw-audio-player.js" defer></script>
+
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      max-width: 720px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      color: #1a1a1a;
+      background: #fafafa;
+    }
+    h1 {
+      font-weight: 300;
+      font-size: 2rem;
+      margin: 0 0 0.5rem;
+    }
+    h2 {
+      font-weight: 500;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin: 3rem 0 1rem;
+    }
+    p { line-height: 1.6; color: #4a4a4a; }
+    pre {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      padding: 1rem;
+      font-size: 0.8125rem;
+      overflow-x: auto;
+      font-family: 'Roboto Mono', monospace;
+    }
+    .demo-section {
+      margin-bottom: 2rem;
+    }
+    .theme-dark {
+      --bap-primary: #3b82f6;
+      --bap-background: #1a1a1a;
+      --bap-text: #f5f5f5;
+      --bap-accent: #60a5fa;
+    }
+    .theme-rounded {
+      --bap-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Blauw Audio Player</h1>
+  <p>A minimal, embeddable audio player. Examples below show single tracks, albums, and theming.</p>
+
+  <h2>Single track</h2>
+  <div class="demo-section">
+    <div class="blauw-audio-player"
+         data-src="https://download.samplelib.com/mp3/sample-15s.mp3"
+         data-title="Sample 15 second track"></div>
+  </div>
+
+  <h2>Single track with cover</h2>
+  <div class="demo-section">
+    <div class="blauw-audio-player"
+         data-src="https://download.samplelib.com/mp3/sample-15s.mp3"
+         data-title="With a cover image"
+         data-cover="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop"></div>
+  </div>
+
+  <h2>Album / playlist</h2>
+  <div class="demo-section">
+    <div class="blauw-audio-player"
+         data-album="Sample Album"
+         data-cover="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&h=400&fit=crop"
+         data-tracks='[
+           {"src":"https://download.samplelib.com/mp3/sample-3s.mp3","title":"Three seconds"},
+           {"src":"https://download.samplelib.com/mp3/sample-6s.mp3","title":"Six seconds"},
+           {"src":"https://download.samplelib.com/mp3/sample-9s.mp3","title":"Nine seconds"},
+           {"src":"https://download.samplelib.com/mp3/sample-12s.mp3","title":"Twelve seconds"},
+           {"src":"https://download.samplelib.com/mp3/sample-15s.mp3","title":"Fifteen seconds"}
+         ]'></div>
+  </div>
+
+  <h2>Dark theme (CSS variables)</h2>
+  <div class="demo-section theme-dark">
+    <div class="blauw-audio-player"
+         data-src="https://download.samplelib.com/mp3/sample-15s.mp3"
+         data-title="Dark themed player"></div>
+  </div>
+
+  <h2>Rounded corners</h2>
+  <div class="demo-section theme-rounded">
+    <div class="blauw-audio-player"
+         data-src="https://download.samplelib.com/mp3/sample-15s.mp3"
+         data-title="Rounded version"
+         data-cover="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=400&fit=crop"></div>
+  </div>
+
+  <h2>Embed code</h2>
+  <pre>&lt;div class="blauw-audio-player"
+     data-src="https://example.com/track.mp3"
+     data-title="Track Title"
+     data-cover="https://example.com/cover.jpg"&gt;&lt;/div&gt;</pre>
+
+  <h2>Album embed code</h2>
+  <pre>&lt;div class="blauw-audio-player"
+     data-album="Album Name"
+     data-cover="https://example.com/cover.jpg"
+     data-tracks='[
+       {"src":"https://example.com/01.mp3","title":"Track 1"},
+       {"src":"https://example.com/02.mp3","title":"Track 2"}
+     ]'&gt;&lt;/div&gt;</pre>
+
+</body>
+</html>

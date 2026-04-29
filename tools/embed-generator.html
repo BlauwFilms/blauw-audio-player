@@ -1,0 +1,343 @@
+<!--
+  ============================================================================
+  Blauw Audio Player — Embed Code Generator
+  https://github.com/BlauwFilms/blauw-audio-player
+  ============================================================================
+  Internal tool. Paste R2 audio URLs and titles, get a copy-paste embed snippet.
+  Live preview requires the Blauw Audio Player CSS + JS to be loaded on the
+  page (either site-wide via jsDelivr, or by adding the script tags directly
+  to the page where you embed this generator).
+  ============================================================================
+-->
+<style>
+.bp-gen *{box-sizing:border-box}
+.bp-gen{width:100%;font-family:'Roboto',sans-serif;background:#ececec;border:1px solid #dadada;border-radius:1px;padding:2rem}
+@media(max-width:768px){.bp-gen{padding:1.25rem}}
+.bp-gen-header{margin-bottom:2rem}
+.bp-gen-header h4{font-weight:300;font-size:1.5rem;color:#1a1a1a;margin:0 0 .5rem}
+.bp-gen-header p{font-size:.9375rem;color:#4a4a4a;margin:0;line-height:1.6}
+.bp-gen-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+@media(max-width:900px){.bp-gen-layout{grid-template-columns:1fr}}
+.bp-gen-section{background:#fff;border:1px solid #e0e0e0;border-radius:1px;padding:1.5rem}
+@media(max-width:768px){.bp-gen-section{padding:1rem}}
+.bp-gen-section + .bp-gen-section{margin-top:1.5rem}
+.bp-gen-title{font-size:.75rem;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:#888;margin:0 0 1.25rem}
+.bp-gen-mode{display:flex;margin-bottom:1.5rem;border:1px solid #dadada;border-radius:1px;overflow:hidden}
+.bp-gen-mode-btn{flex:1;padding:.75rem 1rem;font-family:'Roboto',sans-serif;font-size:.875rem;font-weight:500;background:#fff;border:none;cursor:pointer;transition:all .2s;color:#666}
+.bp-gen-mode-btn:not(:last-child){border-right:1px solid #dadada}
+.bp-gen-mode-btn:hover{background:#f5f5f5}
+.bp-gen-mode-btn.bp-gen-active{background:#1451eb;color:#fff}
+.bp-gen-group{margin-bottom:1.25rem}
+.bp-gen-group:last-child{margin-bottom:0}
+.bp-gen-label{display:block;font-size:.8125rem;font-weight:500;color:#4a4a4a;margin-bottom:.5rem}
+.bp-gen-hint{font-size:.75rem;color:#888;margin-top:.375rem;line-height:1.4}
+.form-field{width:100%;padding:.75rem 1rem;font-family:'Roboto',sans-serif;font-size:.9375rem;color:#1a1a1a;background:#fff;border:1px solid #dadada;border-radius:1px;transition:border-color .2s}
+.form-field:focus{outline:none;border-color:#1451eb}
+.form-field::placeholder{color:#aaa}
+.bp-gen-tracks{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1rem}
+.bp-gen-track{display:flex;gap:.5rem;align-items:flex-start;padding:.75rem;background:#f9f9f9;border:1px solid #e0e0e0;border-radius:1px}
+.bp-gen-track-num{width:24px;height:24px;background:#e0e0e0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:500;color:#666;flex-shrink:0;margin-top:.25rem}
+.bp-gen-track-fields{flex:1;display:flex;flex-direction:column;gap:.5rem;min-width:0}
+.bp-gen-track-fields .form-field{font-size:.875rem;padding:.5rem .75rem}
+.bp-gen-track-del{width:28px;height:28px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#999;transition:color .2s;flex-shrink:0;margin-top:.25rem;padding:0}
+.bp-gen-track-del:hover{color:#e74c3c}
+.bp-gen-add{width:100%;padding:.625rem;background:#fff;border:1px dashed #dadada;border-radius:1px;cursor:pointer;font-family:'Roboto',sans-serif;font-size:.8125rem;color:#666;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.375rem}
+.bp-gen-add:hover{border-color:#1451eb;color:#1451eb;background:#fafbff}
+.bp-gen-add svg{width:14px;height:14px}
+.dash_button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.25rem;font-family:'Roboto',sans-serif;font-size:.875rem;font-weight:500;color:#fff;background:#1451eb;border:none;border-radius:1px;cursor:pointer;transition:background-color .2s}
+.dash_button:hover{background:#112347}
+.dash_button:disabled{background:#ccc;cursor:not-allowed}
+.dash_button svg{width:16px;height:16px}
+.bp-gen-secondary{background:#fff;color:#1a1a1a;border:1px solid #dadada}
+.bp-gen-secondary:hover{background:#f5f5f5;border-color:#1451eb;color:#1451eb}
+.bp-gen-preview-wrap{margin-bottom:1.5rem;min-height:180px;display:flex;align-items:center;justify-content:center;background:#fafafa;border:1px dashed #dadada;border-radius:1px;padding:1rem}
+.bp-gen-preview-empty{text-align:center;color:#888}
+.bp-gen-preview-empty svg{width:40px;height:40px;opacity:.3;margin-bottom:.75rem}
+.bp-gen-preview-empty p{margin:0;font-size:.875rem}
+.bp-gen-output{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #e0e0e0}
+.bp-gen-textarea{width:100%;height:140px;padding:.875rem;font-family:'Roboto Mono',monospace;font-size:.75rem;line-height:1.5;color:#1a1a1a;background:#f9f9f9;border:1px solid #dadada;border-radius:1px;resize:vertical}
+.bp-gen-textarea:focus{outline:none;border-color:#1451eb}
+.bp-gen-actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap}
+.bp-gen-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);padding:.75rem 1.25rem;background:#1a1a1a;color:#fff;font-size:.875rem;border-radius:1px;opacity:0;transition:all .3s;z-index:9999;max-width:90vw}
+.bp-gen-toast.bp-gen-visible{transform:translateX(-50%) translateY(0);opacity:1}
+.bp-gen-error{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:.75rem 1rem;border-radius:1px;font-size:.8125rem;margin-top:.75rem;display:none}
+.bp-gen-error.bp-gen-show{display:block}
+</style>
+
+<div class="bp-gen" id="bpGen">
+  <div class="bp-gen-header">
+    <h4 class="h4-rich-text-title">Embed Code Generator</h4>
+    <p class="rich-text-blauw-films">Paste R2 audio URLs, fill in track details, and copy a ready-to-use embed snippet.</p>
+  </div>
+
+  <div class="bp-gen-layout">
+    <div class="bp-gen-col-input">
+      <div class="bp-gen-section">
+        <h5 class="bp-gen-title">Type</h5>
+        <div class="bp-gen-mode">
+          <button class="bp-gen-mode-btn bp-gen-active" data-mode="single">Single Track</button>
+          <button class="bp-gen-mode-btn" data-mode="album">Album / Playlist</button>
+        </div>
+
+        <div id="bpGenSingle">
+          <div class="bp-gen-group">
+            <label class="bp-gen-label" for="bpGenSingleSrc">Audio URL (from R2)</label>
+            <input type="url" class="form-field" id="bpGenSingleSrc" placeholder="https://pub-xxx.r2.dev/audio/track.mp3">
+            <div class="bp-gen-hint">Paste the public R2 URL for your audio file.</div>
+          </div>
+          <div class="bp-gen-group">
+            <label class="bp-gen-label" for="bpGenSingleTitle">Track Title</label>
+            <input type="text" class="form-field" id="bpGenSingleTitle" placeholder="Episode 1: The Beginning">
+          </div>
+        </div>
+
+        <div id="bpGenAlbum" style="display:none">
+          <div class="bp-gen-group">
+            <label class="bp-gen-label" for="bpGenAlbumTitle">Album / Playlist Title</label>
+            <input type="text" class="form-field" id="bpGenAlbumTitle" placeholder="My Album Name">
+          </div>
+          <div class="bp-gen-group">
+            <label class="bp-gen-label">Tracks</label>
+            <div class="bp-gen-tracks" id="bpGenTrackList"></div>
+            <button class="bp-gen-add" id="bpGenAddTrack" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add another track
+            </button>
+          </div>
+        </div>
+
+        <div class="bp-gen-group">
+          <label class="bp-gen-label" for="bpGenCover">Cover Image URL (Optional)</label>
+          <input type="url" class="form-field" id="bpGenCover" placeholder="https://pub-xxx.r2.dev/covers/cover.jpg">
+          <div class="bp-gen-hint">Square image recommended.</div>
+        </div>
+
+        <div class="bp-gen-error" id="bpGenError"></div>
+      </div>
+    </div>
+
+    <div class="bp-gen-col-output">
+      <div class="bp-gen-section">
+        <h5 class="bp-gen-title">Preview</h5>
+        <div class="bp-gen-preview-wrap" id="bpGenPreviewWrap">
+          <div class="bp-gen-preview-empty" id="bpGenPreviewEmpty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <p>Fill in the fields to see a preview</p>
+          </div>
+        </div>
+
+        <div class="bp-gen-output">
+          <h5 class="bp-gen-title">Embed Code</h5>
+          <textarea class="bp-gen-textarea" id="bpGenCode" readonly placeholder="Fill in the fields to generate embed code..."></textarea>
+          <div class="bp-gen-actions">
+            <button class="dash_button" id="bpGenCopy" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Code
+            </button>
+            <button class="dash_button bp-gen-secondary" id="bpGenReset">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bp-gen-toast" id="bpGenToast">Copied!</div>
+
+<script>
+(function(){
+'use strict';
+
+var S = {
+  mode: 'single',
+  single: { src: '', title: '' },
+  album: { title: '', tracks: [{ src: '', title: '' }] },
+  cover: ''
+};
+
+var $ = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return document.querySelectorAll(s); };
+
+var E = {
+  modeBtns: $$('.bp-gen-mode-btn'),
+  single: $('#bpGenSingle'),
+  album: $('#bpGenAlbum'),
+  singleSrc: $('#bpGenSingleSrc'),
+  singleTitle: $('#bpGenSingleTitle'),
+  albumTitle: $('#bpGenAlbumTitle'),
+  trackList: $('#bpGenTrackList'),
+  addTrack: $('#bpGenAddTrack'),
+  cover: $('#bpGenCover'),
+  error: $('#bpGenError'),
+  previewWrap: $('#bpGenPreviewWrap'),
+  previewEmpty: $('#bpGenPreviewEmpty'),
+  code: $('#bpGenCode'),
+  copy: $('#bpGenCopy'),
+  reset: $('#bpGenReset'),
+  toast: $('#bpGenToast')
+};
+
+function toast(msg){
+  E.toast.textContent = msg;
+  E.toast.classList.add('bp-gen-visible');
+  setTimeout(function(){ E.toast.classList.remove('bp-gen-visible'); }, 2500);
+}
+
+function showError(msg){
+  if(msg){ E.error.textContent = msg; E.error.classList.add('bp-gen-show'); }
+  else{ E.error.classList.remove('bp-gen-show'); }
+}
+
+function isValidUrl(s){
+  if(!s) return false;
+  try{ var u = new URL(s); return u.protocol === 'https:' || u.protocol === 'http:'; }
+  catch(e){ return false; }
+}
+
+function escapeAttr(s){
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function renderTrackList(){
+  E.trackList.innerHTML = '';
+  S.album.tracks.forEach(function(t, i){
+    var d = document.createElement('div');
+    d.className = 'bp-gen-track';
+    d.innerHTML =
+      '<span class="bp-gen-track-num">' + (i+1) + '</span>' +
+      '<div class="bp-gen-track-fields">' +
+        '<input type="url" class="form-field bp-gen-track-src" placeholder="https://pub-xxx.r2.dev/audio/...">' +
+        '<input type="text" class="form-field bp-gen-track-title" placeholder="Track title">' +
+      '</div>' +
+      '<button class="bp-gen-track-del" data-i="' + i + '" aria-label="Remove track">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+      '</button>';
+    var srcInput = d.querySelector('.bp-gen-track-src');
+    var titleInput = d.querySelector('.bp-gen-track-title');
+    srcInput.value = t.src;
+    titleInput.value = t.title;
+    srcInput.oninput = function(){ S.album.tracks[i].src = srcInput.value; update(); };
+    titleInput.oninput = function(){ S.album.tracks[i].title = titleInput.value; update(); };
+    d.querySelector('.bp-gen-track-del').onclick = function(){
+      if(S.album.tracks.length > 1){
+        S.album.tracks.splice(i, 1);
+        renderTrackList();
+        update();
+      }
+    };
+    E.trackList.appendChild(d);
+  });
+}
+
+function buildEmbed(){
+  showError('');
+
+  // Validate based on mode
+  if(S.mode === 'single'){
+    if(!S.single.src) return null;
+    if(!isValidUrl(S.single.src)){
+      showError('Audio URL doesn\'t look valid. Should start with https://');
+      return null;
+    }
+  }else{
+    var validTracks = S.album.tracks.filter(function(t){ return t.src; });
+    if(!validTracks.length) return null;
+    var invalid = validTracks.find(function(t){ return !isValidUrl(t.src); });
+    if(invalid){
+      showError('One or more track URLs don\'t look valid. Should start with https://');
+      return null;
+    }
+  }
+  if(S.cover && !isValidUrl(S.cover)){
+    showError('Cover URL doesn\'t look valid. Should start with https://');
+    return null;
+  }
+
+  var attrs = [];
+
+  if(S.mode === 'single'){
+    attrs.push('data-src="' + escapeAttr(S.single.src) + '"');
+    attrs.push('data-title="' + escapeAttr(S.single.title || 'Untitled') + '"');
+  }else{
+    if(S.album.title) attrs.push('data-album="' + escapeAttr(S.album.title) + '"');
+    var validTracks = S.album.tracks.filter(function(t){ return t.src; });
+    var tracksJson = JSON.stringify(validTracks.map(function(t){
+      return { src: t.src, title: t.title || 'Untitled' };
+    }));
+    // For HTML attribute we use single quotes around the value, so escape internal single quotes/HTML
+    var safeJson = tracksJson.replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    attrs.push("data-tracks='" + safeJson + "'");
+  }
+
+  if(S.cover) attrs.push('data-cover="' + escapeAttr(S.cover) + '"');
+
+  return '<div class="blauw-audio-player"\n     ' + attrs.join('\n     ') + '></div>';
+}
+
+function update(){
+  var embed = buildEmbed();
+  if(!embed){
+    E.code.value = '';
+    E.copy.disabled = true;
+    E.previewWrap.innerHTML = '';
+    E.previewWrap.appendChild(E.previewEmpty);
+    E.previewEmpty.style.display = 'block';
+    return;
+  }
+  E.code.value = embed;
+  E.copy.disabled = false;
+  // Render live preview using the actual player script
+  E.previewWrap.innerHTML = embed;
+  if(window.BlauwAudioPlayer && window.BlauwAudioPlayer.init){
+    window.BlauwAudioPlayer.init();
+  }else{
+    E.previewWrap.innerHTML = '<div style="color:#991b1b;font-size:.875rem">Player script not loaded. Make sure blauw-audio-player is in your site-wide custom code.</div>';
+  }
+}
+
+// Mode toggle
+E.modeBtns.forEach(function(b){
+  b.onclick = function(){
+    if(S.mode === b.dataset.mode) return;
+    E.modeBtns.forEach(function(x){ x.classList.remove('bp-gen-active'); });
+    b.classList.add('bp-gen-active');
+    S.mode = b.dataset.mode;
+    E.single.style.display = S.mode === 'single' ? 'block' : 'none';
+    E.album.style.display = S.mode === 'album' ? 'block' : 'none';
+    update();
+  };
+});
+
+// Single track inputs
+E.singleSrc.oninput = function(){ S.single.src = E.singleSrc.value.trim(); update(); };
+E.singleTitle.oninput = function(){ S.single.title = E.singleTitle.value; update(); };
+
+// Album inputs
+E.albumTitle.oninput = function(){ S.album.title = E.albumTitle.value; update(); };
+E.addTrack.onclick = function(){ S.album.tracks.push({ src: '', title: '' }); renderTrackList(); update(); };
+
+// Cover input
+E.cover.oninput = function(){ S.cover = E.cover.value.trim(); update(); };
+
+// Copy
+E.copy.onclick = function(){
+  navigator.clipboard.writeText(E.code.value).then(function(){ toast('Copied!'); });
+};
+
+// Reset
+E.reset.onclick = function(){
+  if(E.code.value && !confirm('Clear all fields?')) return;
+  S = { mode: 'single', single: { src: '', title: '' }, album: { title: '', tracks: [{ src: '', title: '' }] }, cover: '' };
+  E.singleSrc.value = ''; E.singleTitle.value = '';
+  E.albumTitle.value = ''; E.cover.value = '';
+  E.modeBtns.forEach(function(x){ x.classList.toggle('bp-gen-active', x.dataset.mode === 'single'); });
+  E.single.style.display = 'block'; E.album.style.display = 'none';
+  renderTrackList();
+  update();
+};
+
+// Initial render
+renderTrackList();
+update();
+})();
+</script>
