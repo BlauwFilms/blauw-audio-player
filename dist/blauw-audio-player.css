@@ -175,6 +175,15 @@
 .blauw-audio-player .bap-btn svg {
   width: 16px;
   height: 16px;
+  display: block;
+}
+.blauw-audio-player .bap-play-icon,
+.blauw-audio-player .bap-pause-icon,
+.blauw-audio-player .bap-vol-icon,
+.blauw-audio-player .bap-mute-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Primary play button */
